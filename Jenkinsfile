@@ -9,11 +9,11 @@ pipeline {
         TF_DIR = "${WORKSPACE}\\terraform"
         
         // Timeout for pipeline (minutes)
-        PIPELINE_TIMEOUT = 30
+        PIPELINE_TIMEOUT = '30'
     }
     
     options {
-        timeout(time: ${env.PIPELINE_TIMEOUT}, unit: 'MINUTES')
+        timeout(time: 30, unit: 'MINUTES')  // Fixed: Using direct value instead of interpolation
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
     
