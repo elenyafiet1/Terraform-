@@ -1,19 +1,15 @@
 pipeline {
     agent any
-    
     stages {
-        stage('Terraform Init') {
-            steps {
-                bat 'terraform --version'
-                dir('terraform') {
-                    bat 'terraform init'
-                }
-            }
-        }
         stage('Terraform Plan') {
             steps {
-                dir('terraform') {
-                    bat 'terraform plan'
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-terraform-creds', // Must match Jenkins credential ID
+                    accessKeyVariable: 'AKIAXKUH3BR5ZAS3J547',
+                    secretKeyVariable: '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'
+                ]]) {
+                    sh 'terraform plan'
                 }
             }
         }
