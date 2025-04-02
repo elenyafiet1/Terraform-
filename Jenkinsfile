@@ -5,11 +5,13 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-terraform-creds', // Must match Jenkins credential ID
+                    credentialsId: 'aws-terraform-creds',
                     accessKeyVariable: 'AKIAXKUH3BR5ZAS3J547',
                     secretKeyVariable: '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'
                 ]]) {
-                    sh 'terraform plan'
+                    dir('terraform') {
+                        bat 'terraform plan'
+                    }
                 }
             }
         }
