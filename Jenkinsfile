@@ -24,14 +24,17 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-terraform-creds', // Must match your Jenkins credential ID
+                    credentialsId: 'aws-terraform-creds',
                     accessKeyVariable: 'AKIAXKUH3BR5ZAS3J547',
                     secretKeyVariable: 'gqXFXJhx5W5hXGamnYWb7c4250RZZOzDZ+9A5xOx'
                 ]]) {
                     dir('terraform') {
-                        bat 'set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%'
-                        bat 'set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%'
-                        bat 'terraform plan'
+                        // Single bat command to preserve environment variables
+                        bat '''
+                            set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%
+                            set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%
+                            terraform plan
+                        '''
                     }
                 }
             }
